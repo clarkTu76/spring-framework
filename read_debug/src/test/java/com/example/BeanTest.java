@@ -15,13 +15,13 @@ public class BeanTest {
 	@Test
 	public void test(){
 		XmlBeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("xmlBeanFactory.xml"));
-		Object user = beanFactory.getBean("user");
+		Object user = beanFactory.getBean("1");
 		System.out.println(user);
 	}
 
 	public static void main(String[] args) {
 		XmlBeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("xmlBeanFactory.xml"));
-		Object user = beanFactory.getBean("user");
+		Object user = beanFactory.getBean("1");
 		System.out.println(user);
 	}
 
