@@ -8,7 +8,7 @@ public class Test {
 	@org.junit.jupiter.api.Test
 	public void test(){
 		ApplicationContext xmlApplicationContext
-				= new ClassPathXmlApplicationContext("bean.xml");
+				= new ClassPathXmlApplicationContext("spring-${username}.xml");
 
 		User clark = (User)xmlApplicationContext.getBean("clark");
 		System.out.println(clark);
