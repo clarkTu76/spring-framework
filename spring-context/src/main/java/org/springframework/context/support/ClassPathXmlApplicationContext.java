@@ -139,6 +139,7 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 			throws BeansException {
 		//调用父类的构造方法，初始化相关对象的属性
 		super(parent);
+		//创建环境 递归解析配置文件占位符问题
 		setConfigLocations(configLocations);
 		if (refresh) {
 			refresh();
