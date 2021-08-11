@@ -435,7 +435,7 @@ public class BeanDefinitionParserDelegate {
 		if (containingBean == null) {
 			checkNameUniqueness(beanName, aliases, ele);
 		}
-
+		//解析bean标签的 class parent 元数据 等元素信息
 		AbstractBeanDefinition beanDefinition = parseBeanDefinitionElement(ele, beanName, containingBean);
 		if (beanDefinition != null) {
 			if (!StringUtils.hasText(beanName)) {
@@ -516,11 +516,11 @@ public class BeanDefinitionParserDelegate {
 		}
 
 		try {
-			//创建包装bean信息的 GenericBeanDefinition GenericBeanDefinition
+			//创建BeanDefinition 包装bean信息的 GenericBeanDefinition GenericBeanDefinition
 			AbstractBeanDefinition bd = createBeanDefinition(className, parent);
-			//解析bean标签的其他各种属性
+			//解析bean标签的其他各种属性 singleton scope abstract lazy等
 			parseBeanDefinitionAttributes(ele, beanName, containingBean, bd);
-			//设置description信息
+			//设置description标签信息
 			bd.setDescription(DomUtils.getChildElementValueByTagName(ele, DESCRIPTION_ELEMENT));
 			//解析元数据
 			parseMetaElements(ele, bd);
@@ -660,6 +660,7 @@ public class BeanDefinitionParserDelegate {
 		NodeList nl = ele.getChildNodes();
 		for (int i = 0; i < nl.getLength(); i++) {
 			Node node = nl.item(i);
+			//bean 标签中的meta属性 Element实现了  继承Node接口的接口（DeferredTextImpl）
 			if (isCandidateElement(node) && nodeNameEquals(node, META_ELEMENT)) {
 				Element metaElement = (Element) node;
 				String key = metaElement.getAttribute(KEY_ATTRIBUTE);
@@ -786,8 +787,11 @@ public class BeanDefinitionParserDelegate {
 	 * Parse a constructor-arg element.
 	 */
 	public void parseConstructorArgElement(Element ele, BeanDefinition bd) {
+		//解析index
 		String indexAttr = ele.getAttribute(INDEX_ATTRIBUTE);
+		//解析type
 		String typeAttr = ele.getAttribute(TYPE_ATTRIBUTE);
+		//解析name
 		String nameAttr = ele.getAttribute(NAME_ATTRIBUTE);
 		if (StringUtils.hasLength(indexAttr)) {
 			try {
@@ -797,6 +801,7 @@ public class BeanDefinitionParserDelegate {
 				}
 				else {
 					try {
+						//ArrayDeque.push()
 						this.parseState.push(new ConstructorArgumentEntry(index));
 						Object value = parsePropertyValue(ele, bd, null);
 						ConstructorArgumentValues.ValueHolder valueHolder = new ConstructorArgumentValues.ValueHolder(value);
