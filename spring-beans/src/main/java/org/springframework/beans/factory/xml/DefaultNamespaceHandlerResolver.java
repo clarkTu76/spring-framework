@@ -115,24 +115,31 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 	@Override
 	@Nullable
 	public NamespaceHandler resolve(String namespaceUri) {
+		//获取已经配置好的handler映射
 		Map<String, Object> handlerMappings = getHandlerMappings();
+		//根据命名空间找到对应的信息
 		Object handlerOrClassName = handlerMappings.get(namespaceUri);
 		if (handlerOrClassName == null) {
 			return null;
 		}
 		else if (handlerOrClassName instanceof NamespaceHandler) {
+			//
 			return (NamespaceHandler) handlerOrClassName;
 		}
 		else {
 			String className = (String) handlerOrClassName;
 			try {
+				//反射加载对应的类
 				Class<?> handlerClass = ClassUtils.forName(className, this.classLoader);
 				if (!NamespaceHandler.class.isAssignableFrom(handlerClass)) {
 					throw new FatalBeanException("Class [" + className + "] for namespace [" + namespaceUri +
 							"] does not implement the [" + NamespaceHandler.class.getName() + "] interface");
 				}
+				//实例化
 				NamespaceHandler namespaceHandler = (NamespaceHandler) BeanUtils.instantiateClass(handlerClass);
+				//初始化对应的标签与解析类
 				namespaceHandler.init();
+
 				handlerMappings.put(namespaceUri, namespaceHandler);
 				return namespaceHandler;
 			}
@@ -149,6 +156,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 
 	/**
 	 * Load the specified NamespaceHandler mappings lazily.
+	 * 解析schema的时候有一个getSchemaMappings 注意debug idea自己调用toString
 	 */
 	private Map<String, Object> getHandlerMappings() {
 		Map<String, Object> handlerMappings = this.handlerMappings;
@@ -160,6 +168,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 						logger.trace("Loading NamespaceHandler mappings from [" + this.handlerMappingsLocation + "]");
 					}
 					try {
+						//handlerMappingsLocation 在构造函数中设置成了META-INF/spring.handlers
 						Properties mappings =
 								PropertiesLoaderUtils.loadAllProperties(this.handlerMappingsLocation, this.classLoader);
 						if (logger.isTraceEnabled()) {
@@ -182,7 +191,8 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 
 	@Override
 	public String toString() {
-		return "NamespaceHandlerResolver using mappings " + getHandlerMappings();
+		//return "NamespaceHandlerResolver using mappings " + getHandlerMappings();
+		return "NamespaceHandlerResolver using mappings ";
 	}
 
 }

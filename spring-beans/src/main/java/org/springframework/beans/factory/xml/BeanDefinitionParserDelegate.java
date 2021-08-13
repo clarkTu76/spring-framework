@@ -1394,15 +1394,25 @@ public class BeanDefinitionParserDelegate {
 	 */
 	@Nullable
 	public BeanDefinition parseCustomElement(Element ele, @Nullable BeanDefinition containingBd) {
+		//远程约束文件与本地约束文件的映射
+		//项目中的resources目录下 META-INF目录下spring.schemas 做了远程约束文件URL与本地约束文件PATH的映射  映射到
+		//项目中的resources目录下 org/springframework/beans/factory/xml目录下
+		//namespace与namespaceHandler的映射
+		//映射在项目中的resources目录下 META-INF目录下spring.handlers
+		//是对应的namespace映射对应handler的全路径类名
+		//不同的namespace对应的映射文件在对应的项目下 比如与context相关的就在spring-context项目下 与bean相关的就在spring-beans项目下
+		//获取命名空间
 		String namespaceUri = getNamespaceURI(ele);
 		if (namespaceUri == null) {
 			return null;
 		}
+		//根据命名空间找到对应的 namespaceHandler resolve中调用了getHandlerMappings()
 		NamespaceHandler handler = this.readerContext.getNamespaceHandlerResolver().resolve(namespaceUri);
 		if (handler == null) {
 			error("Unable to locate Spring NamespaceHandler for XML schema namespace [" + namespaceUri + "]", ele);
 			return null;
 		}
+		//
 		return handler.parse(ele, new ParserContext(this.readerContext, this, containingBd));
 	}
 

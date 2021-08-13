@@ -87,12 +87,16 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 		// resource loading environment.
 		//给reader设置环境对象
 		beanDefinitionReader.setEnvironment(this.getEnvironment());
+		//设置资源加载器
 		beanDefinitionReader.setResourceLoader(this);
+		//设置xml资源解析器
 		beanDefinitionReader.setEntityResolver(new ResourceEntityResolver(this));
 
 		// Allow a subclass to provide custom initialization of the reader,
 		// then proceed with actually loading the bean definitions.
+		//初始化beanDefinitionReader 设置了一个是否验证的属性值
 		initBeanDefinitionReader(beanDefinitionReader);
+		//进行beanDefinition信息加载
 		loadBeanDefinitions(beanDefinitionReader);
 	}
 
@@ -124,6 +128,7 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 		//以resource的方式获得配置文件的资源位置 在test中调用ClassPathXmlApplicationContext(String[] paths,构造器时 Resource[]才不为空
 		Resource[] configResources = getConfigResources();
 		if (configResources != null) {
+			//与 String[] ->String -Resource[] ->Resource  与下面的String[]最后的处理逻辑一样
 			reader.loadBeanDefinitions(configResources);
 		}
 		//以String的形式获得配置文件的位置
