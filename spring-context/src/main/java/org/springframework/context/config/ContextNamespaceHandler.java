@@ -32,8 +32,11 @@ public class ContextNamespaceHandler extends NamespaceHandlerSupport {
 
 	/**
 	 * 如果需要自定义标签
-	 * 1创建一个对应的解析器处理类
+	 * 1创建一个对应的解析器处理类 定义doParse
 	 * 2创建一个spring.handler 配置文件 让程序能够完成加载工作
+	 * 3创建对应标签的parser类
+	 *
+	 * 这里的element是 <context:后面的
 	 */
 	@Override
 	public void init() {
