@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="customer" class="com.example.custom.editor.Customer">
+		<property name="name" value="zhangsan"/>
+		<property name="address" value="安徽省_宣城市_宣州区"/>
+ 	</bean>
+
+	<!--<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+		<property name="propertyEditorRegistrars">
+			<list>
+				<bean class="com.example.custom.editor.AddressPropertyEditorRegistrar"/>
+			</list>
+		</property>
+	</bean>-->
+
+	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+		<property name="customEditors">
+			<map>
+				<entry key="com.example.custom.editor.Address">
+					<value>com.example.custom.editor.AddressPropertyEditor</value>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+</beans>

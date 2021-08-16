@@ -5,14 +5,14 @@ import com.example.custom.tag.UserTag;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class TestCustomizeTag {
+public class TestCustomEditor {
 
 	@org.junit.jupiter.api.Test
 	public void test(){
-		//自定义标签解析
-		ApplicationContext ac = new ClassPathXmlApplicationContext("custom-tag.xml");
-		UserTag userTag = (UserTag)ac.getBean("clark");
-		System.out.println(userTag.getUsername());
+		//自定义属性编辑器
+		ApplicationContext ac = new ClassPathXmlApplicationContext("custom-editor.xml");
+		Customer customer = ac.getBean(Customer.class);
+		System.out.println(customer);
 
 	}
 }

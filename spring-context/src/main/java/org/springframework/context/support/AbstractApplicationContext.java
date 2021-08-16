@@ -538,11 +538,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
-			//创建 DefaultListableBeanFactory
+			//创建 DefaultListableBeanFactory 解析xml 创建BeanDefinition 注册到 beanFactory中
 			//
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
+			//beanFactory准备工作，对其填充各种属性
 			prepareBeanFactory(beanFactory);
 
 			try {
@@ -674,12 +675,18 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	protected void prepareBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 		// Tell the internal bean factory to use the context's class loader etc.
+		//设置beanFactory的classLoader作为当前context的classLoader  app classLoader
 		beanFactory.setBeanClassLoader(getClassLoader());
+		//设置beanFactory的表达式处理器
 		beanFactory.setBeanExpressionResolver(new StandardBeanExpressionResolver(beanFactory.getBeanClassLoader()));
+		//给beanFactory增加一个默认的propertyEditor 在实例化填充属性的时候用
 		beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment()));
 
 		// Configure the bean factory with context callbacks.
+		//添加BeanPostProcessor,ApplicationContextAwareProcessor此类完成某些Aware对象的注入
 		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
+		//接口的实现是由容器通过set方法注入的
+		//所以在使用autowire进行注入的时候需要将这些接口忽略
 		beanFactory.ignoreDependencyInterface(EnvironmentAware.class);
 		beanFactory.ignoreDependencyInterface(EmbeddedValueResolverAware.class);
 		beanFactory.ignoreDependencyInterface(ResourceLoaderAware.class);
@@ -689,6 +696,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 		// BeanFactory interface not registered as resolvable type in a plain factory.
 		// MessageSource registered (and found for autowiring) as a bean.
+
 		beanFactory.registerResolvableDependency(BeanFactory.class, beanFactory);
 		beanFactory.registerResolvableDependency(ResourceLoader.class, this);
 		beanFactory.registerResolvableDependency(ApplicationEventPublisher.class, this);

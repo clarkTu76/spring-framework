@@ -23,4 +23,7 @@ public class MyClassPathXmlApplicationContext extends ClassPathXmlApplicationCon
 		super.setAllowCircularReferences(false);
 		super.customizeBeanFactory(beanFactory);
 	}
+
+
+
 }
