@@ -548,9 +548,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 			try {
 				// Allows post-processing of the bean factory in context subclasses.
+				// 空方法,子类相关方法拓展,spring自己在web中有拓展
 				postProcessBeanFactory(beanFactory);
 
 				// Invoke factory processors registered as beans in the context.
+
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
@@ -696,16 +698,24 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 		// BeanFactory interface not registered as resolvable type in a plain factory.
 		// MessageSource registered (and found for autowiring) as a bean.
-
+		// 设置几个自动装配的特殊规则,当在进行ioc初始化的如果有多个实现，那么就使用指定的对象进行注入 尤其是在by_type注入的时候
 		beanFactory.registerResolvableDependency(BeanFactory.class, beanFactory);
 		beanFactory.registerResolvableDependency(ResourceLoader.class, this);
 		beanFactory.registerResolvableDependency(ApplicationEventPublisher.class, this);
 		beanFactory.registerResolvableDependency(ApplicationContext.class, this);
 
 		// Register early post-processor for detecting inner beans as ApplicationListeners.
+		// 注册BeanPostProcessor
 		beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(this));
 
 		// Detect a LoadTimeWeaver and prepare for weaving, if found.
+		// 增加对AspectJ的支持，在java中织入分为三种方式，分为编译器织入，类加载器织入，运行期织入
+		// 编译器织入是指在java编译器，采用特殊的编译器，将切面织入到java类中
+		// 而类加载期织入则指通过特殊的类加载器，在类字节码加载到JVM时，织入切面
+		// 运行期织入则是采用cglib和jdk进行切面的织入
+
+		// aspectj提供了两种织入方式，第一种是通过特殊编译器，在编译器，将aspectj语言编写的切面类织入到java类中，
+		// 第二种是类加载期织入，就是下面的load time weaving，此处后续讲
 		if (beanFactory.containsBean(LOAD_TIME_WEAVER_BEAN_NAME)) {
 			beanFactory.addBeanPostProcessor(new LoadTimeWeaverAwareProcessor(beanFactory));
 			// Set a temporary ClassLoader for type matching.
@@ -713,6 +723,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// Register default environment beans.
+		// 注册默认的系统环境bean(StandardEnvironment)到一级缓存中
 		if (!beanFactory.containsLocalBean(ENVIRONMENT_BEAN_NAME)) {
 			beanFactory.registerSingleton(ENVIRONMENT_BEAN_NAME, getEnvironment());
 		}
@@ -740,6 +751,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * <p>Must be called before singleton instantiation.
 	 */
 	protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
+		//获取到当前应用上下文中的 beanFactoryPostProcessor 变量集合
+		//并且实例化调用执行所有已经注册的 beanFactoryPostProcessor
+		//默认情况下 getBeanFactoryPostProcessors() 返回的是空的集合
+		//这里能识别的 是重写 addBeanFactoryPostProcessor() 的，xml配置的这里获取不到 xml配置的在beanDefinition中
 		PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(beanFactory, getBeanFactoryPostProcessors());
 
 		// Detect a LoadTimeWeaver and prepare for weaving, if found in the meantime

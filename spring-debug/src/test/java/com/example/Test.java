@@ -8,7 +8,7 @@ public class Test {
 	@org.junit.jupiter.api.Test
 	public void test(){
 		//xml解析
-		ApplicationContext xmlApplicationContext = new ClassPathXmlApplicationContext("spring-bean.xml");
+		ApplicationContext xmlApplicationContext = new MyClassPathXmlApplicationContext("spring-bean.xml");
 
 		User clark = (User)xmlApplicationContext.getBean("clark");
 		System.out.println(clark);
