@@ -170,11 +170,13 @@ class ConfigurationClassParser {
 	public void parse(Set<BeanDefinitionHolder> configCandidates) {
 		for (BeanDefinitionHolder holder : configCandidates) {
 			BeanDefinition bd = holder.getBeanDefinition();
+			//根据BeanDefinition的不同,调用parse 不同的重载方法,实际上最终调用的是processConfigurationClass()方法
 			try {
-				//根据BeanDefinition的不同,调用parse 不同的重载方法,实际上最终调用的是processConfigurationClass()方法
+				// 注解类型
 				if (bd instanceof AnnotatedBeanDefinition) {
 					parse(((AnnotatedBeanDefinition) bd).getMetadata(), holder.getBeanName());
 				}
+				// 有class对象的
 				else if (bd instanceof AbstractBeanDefinition && ((AbstractBeanDefinition) bd).hasBeanClass()) {
 					parse(((AbstractBeanDefinition) bd).getBeanClass(), holder.getBeanName());
 				}
@@ -190,10 +192,14 @@ class ConfigurationClassParser {
 						"Failed to parse configuration class [" + bd.getBeanClassName() + "]", ex);
 			}
 		}
-
+		// 执行找到的DeferredImportSelector
+		// DeferredImportSelector是ImportSelector的一个子类
+		// ImportSelector被设计成和@Import注解同样的效果，但是实现了ImportSelector的类可以条件性的决定导入某些配置
+		// DeferredImportSelector的设计魔都是在所有其他的配置类被处理后才进行处理
 		this.deferredImportSelectorHandler.process();
 	}
 
+	// 根据className和beanName解析配置文件，读取元数据
 	protected final void parse(@Nullable String className, String beanName) throws IOException {
 		Assert.notNull(className, "No bean class name for configuration class bean definition");
 		MetadataReader reader = this.metadataReaderFactory.getMetadataReader(className);
