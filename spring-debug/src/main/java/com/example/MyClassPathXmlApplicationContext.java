@@ -1,6 +1,6 @@
 package com.example;
 
-import org.springframework.beans.BeansException;
+import com.example.custom.bdrpp.MyBeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -24,7 +24,7 @@ public class MyClassPathXmlApplicationContext extends ClassPathXmlApplicationCon
 		super.setAllowCircularReferences(false);
 		super.customizeBeanFactory(beanFactory);
 		//自定义bfpp的第二种方法
-		//super.addBeanFactoryPostProcessor(new MyBeanFactoryPostProcessor());
+		super.addBeanFactoryPostProcessor(new MyBeanFactoryPostProcessor());
 	}
 
 

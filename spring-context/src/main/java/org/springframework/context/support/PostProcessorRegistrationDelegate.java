@@ -78,7 +78,7 @@ final class PostProcessorRegistrationDelegate {
 			//存放BeanDefinitionRegistryPostProcessors集合
 			List<BeanDefinitionRegistryPostProcessor> registryProcessors = new ArrayList<>();
 
-			//首先处理入参中的BeanFactoryPostProcessor
+			//首先处理入参 BeanFactoryPostProcessor
 			for (BeanFactoryPostProcessor postProcessor : beanFactoryPostProcessors) {
 				//如果是BeanDefinitionRegistryPostProcessor 强转并执行register接口方法 然后加入普通的父接口的集合 执行父接口的方法
 				if (postProcessor instanceof BeanDefinitionRegistryPostProcessor) {
@@ -178,11 +178,16 @@ final class PostProcessorRegistrationDelegate {
 
 		else {
 			// Invoke factory processors registered with the context instance.
+			//如果beanFactory不属于 BeanDefinitionRegister 类型
 			invokeBeanFactoryPostProcessors(beanFactoryPostProcessors, beanFactory);
 		}
 
 
 		/*--------------------------------------------------------------------------*/
+		//到这里为止，入参 BeanFactoryPostProcessor 和 容器中的 BeanDefinitionRegisterPostProcessor
+		//已经全部调用 接着处理所有容器中的 BeanFactoryPostProcessor
+		//可能有些类只实现了 BeanFactoryPostProcessor 并没有实现 BeanDefinitionRegisterPostProcessor
+
 		// Do not initialize FactoryBeans here: We need to leave all regular beans
 		// uninitialized to let the bean factory post-processors apply to them!
 

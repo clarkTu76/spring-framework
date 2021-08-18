@@ -4,5 +4,8 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!--自定义bfpp的第一种方法-->
-	<bean class="com.example.MyBeanFactoryPostProcessor"></bean>
+	<!--<bean class="com.example.MyBeanFactoryPostProcessor"></bean>-->
+
+	<bean class="com.example.custom.bdrpp.MyBeanDefinitionRegisterPostProcessor"/>
+
 </beans>

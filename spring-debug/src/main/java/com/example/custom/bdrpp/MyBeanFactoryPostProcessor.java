@@ -1,4 +1,4 @@
-package com.example;
+package com.example.custom.bdrpp;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;

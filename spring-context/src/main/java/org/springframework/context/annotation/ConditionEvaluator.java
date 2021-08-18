@@ -83,6 +83,13 @@ class ConditionEvaluator {
 		}
 
 		if (phase == null) {
+			// 下面的逻辑判断中，需要进入ConfigurationClassUtils.isConfigurationCandidate方法，主要的逻辑如下：
+			// 1、metadata是AnnotationMetadata类的一个实例
+			// 2、检查bean中是否使用@Configuration注解
+			// 3、检查bean不是一个接口
+			// 4、检查bean中是否包含@Component @ComponentScan @Import @ImportResource中任意一个
+			// 5、检查bean中是否有@Bean注解
+			// 只要满足其中1,2或者1,3或者1,4或者1,5就会继续递归
 			if (metadata instanceof AnnotationMetadata &&
 					ConfigurationClassUtils.isConfigurationCandidate((AnnotationMetadata) metadata)) {
 				return shouldSkip(metadata, ConfigurationPhase.PARSE_CONFIGURATION);
@@ -93,11 +100,12 @@ class ConditionEvaluator {
 		List<Condition> conditions = new ArrayList<>();
 		for (String[] conditionClasses : getConditionClasses(metadata)) {
 			for (String conditionClass : conditionClasses) {
+				// 获取到@Conditional注解后面的value数组
 				Condition condition = getCondition(conditionClass, this.context.getClassLoader());
 				conditions.add(condition);
 			}
 		}
-
+		// 对相关的条件进行排序操作
 		AnnotationAwareOrderComparator.sort(conditions);
 
 		for (Condition condition : conditions) {
@@ -105,7 +113,12 @@ class ConditionEvaluator {
 			if (condition instanceof ConfigurationCondition) {
 				requiredPhase = ((ConfigurationCondition) condition).getConfigurationPhase();
 			}
+			// requiredPhase只可能是空或者是ConfigurationCondition的一个实例对象
 			if ((requiredPhase == null || requiredPhase == phase) && !condition.matches(this.context, metadata)) {
+				//此逻辑为：1.requiredPhase不是ConfigurationCondition的实例
+				//2.phase==requiredPhase,从上述的递归可知：phase可为ConfigurationPhase.PARSE_CONFIGURATION或者ConfigurationPhase.REGISTER_BEAN
+				//3.condition.matches(this.context, metadata)返回false
+				//如果1、2或者1、3成立，则在此函数的上层将阻断bean注入Spring容器
 				return true;
 			}
 		}
