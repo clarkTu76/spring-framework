@@ -137,7 +137,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 				}
 				//实例化
 				NamespaceHandler namespaceHandler = (NamespaceHandler) BeanUtils.instantiateClass(handlerClass);
-				//初始化对应的标签与解析类
+				//初始化对应的标签与解析类 这里就是初始化了 parsers
 				namespaceHandler.init();
 				//将Context标签的处理器放入缓存中
 				handlerMappings.put(namespaceUri, namespaceHandler);
