@@ -7,11 +7,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 @Component
-@PropertySource({"classpath:db.properties"})
 public class MyMember {
 
-	@Value("#{jdbc.url}")
-	private String url;
+
 
 	@Component
 	@ComponentScan

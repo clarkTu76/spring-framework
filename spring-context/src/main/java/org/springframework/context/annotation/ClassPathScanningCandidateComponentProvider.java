@@ -312,6 +312,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 			return addCandidateComponentsFromIndex(this.componentsIndex, basePackage);
 		}
 		else {
+			//扫描候选组件
 			return scanCandidateComponents(basePackage);
 		}
 	}
@@ -413,6 +414,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	}
 
 	private Set<BeanDefinition> scanCandidateComponents(String basePackage) {
+		//存放候选者的集合 只有满足@Component 和 独立的类 具体的类 才会放进这个集合
 		Set<BeanDefinition> candidates = new LinkedHashSet<>();
 		try {
 			//classpath*:com/example/**/*.class
@@ -431,11 +433,12 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 					try {
 
 						MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource);
-
+						//判断是否是候选组件 会判断AnnotationMetadata中是否包含Component
 						if (isCandidateComponent(metadataReader)) {
-
+							//如果是候选组件 就根据metadata 和resource 创建beanDefinition
 							ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
 							sbd.setSource(resource);
+							//判断类的一些信息 是否独立的类等等
 							if (isCandidateComponent(sbd)) {
 								if (debugEnabled) {
 									logger.debug("Identified candidate component class: " + resource);
@@ -499,7 +502,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 		}
 		for (TypeFilter tf : this.includeFilters) {
 			if (tf.match(metadataReader, getMetadataReaderFactory())) {
-				//是否满足条件
+				//是否满足shouldSkip 跳过  不跳过返回true
 				return isConditionMatch(metadataReader);
 			}
 		}
@@ -530,6 +533,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 */
 	protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
 		AnnotationMetadata metadata = beanDefinition.getMetadata();
+		// 判断是否是封闭类 或 独立的内部类  是否是具体的(不是接口  不是AbsClass)  如果是AbsClass 是否包含 @LookUp
 		return (metadata.isIndependent() && (metadata.isConcrete() ||
 				(metadata.isAbstract() && metadata.hasAnnotatedMethods(Lookup.class.getName()))));
 	}

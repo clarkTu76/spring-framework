@@ -274,7 +274,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<>();
 		// 遍历basePackages
 		for (String basePackage : basePackages) {
-			// 扫描basePackage,将符合要求的bean定义全部找出来
+			// 扫描basePackage,找出@Component 独立的 具体的类 并创建ScannedGenericBeanDefinition
 			Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
 			// 遍历所有候选的bean定义
 			for (BeanDefinition candidate : candidates) {
@@ -291,7 +291,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 					// 处理定义在目标类上的通用注解，包括@Lazy，@Primary，@DependsOn，@Role，@Description
 					AnnotationConfigUtils.processCommonDefinitionAnnotations((AnnotatedBeanDefinition) candidate);
 				}
-				// 检查beanName是否已经注册过，如果注册过，检查是否兼容
+				// 检查beanName是否已经注册过，如果注册过，检查是否兼容 没有注册过返回 true
 				if (checkCandidate(beanName, candidate)) {
 					// 将当前遍历bean的bean定义和beanName封装成BeanDefinitionHolder
 					BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(candidate, beanName);

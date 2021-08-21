@@ -59,14 +59,16 @@ public abstract class AbstractTypeHierarchyTraversingFilter implements TypeFilte
 
 		// This method optimizes avoiding unnecessary creation of ClassReaders
 		// as well as visiting over those readers.
+		//查看元数据中是否有 @Component注解
 		if (matchSelf(metadataReader)) {
 			return true;
 		}
+		//查看类名称是否符合
 		ClassMetadata metadata = metadataReader.getClassMetadata();
 		if (matchClassName(metadata.getClassName())) {
 			return true;
 		}
-
+		//如果考虑继承
 		if (this.considerInherited) {
 			String superClassName = metadata.getSuperClassName();
 			if (superClassName != null) {
@@ -93,7 +95,7 @@ public abstract class AbstractTypeHierarchyTraversingFilter implements TypeFilte
 				}
 			}
 		}
-
+		//如果考虑接口
 		if (this.considerInterfaces) {
 			for (String ifc : metadata.getInterfaceNames()) {
 				// Optimization to avoid creating ClassReader for super class

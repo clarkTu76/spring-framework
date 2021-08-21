@@ -1118,6 +1118,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 					"Cannot combine factory method with container-generated method overrides: " +
 					"the factory method must create the concrete bean instance.");
 		}
+		//这个beanClass 是否是Class对象
 		if (hasBeanClass()) {
 			prepareMethodOverrides();
 		}

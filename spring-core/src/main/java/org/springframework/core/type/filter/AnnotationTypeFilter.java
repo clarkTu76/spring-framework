@@ -97,6 +97,7 @@ public class AnnotationTypeFilter extends AbstractTypeHierarchyTraversingFilter 
 	@Override
 	protected boolean matchSelf(MetadataReader metadataReader) {
 		AnnotationMetadata metadata = metadataReader.getAnnotationMetadata();
+		//查看当前注解元数据中是否包含 org.springframework.stereotype.Component 注解
 		return metadata.hasAnnotation(this.annotationType.getName()) ||
 				(this.considerMetaAnnotations && metadata.hasMetaAnnotation(this.annotationType.getName()));
 	}
