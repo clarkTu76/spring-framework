@@ -101,12 +101,12 @@ final class PostProcessorRegistrationDelegate {
 			// PriorityOrdered, Ordered, and the rest.
 			//用于保存本次要执行的BeanDefinitionRegistryPostProcessor 跟外部传进来的无关 外部传参上面已经=执行了
 			List<BeanDefinitionRegistryPostProcessor> currentRegistryProcessors = new ArrayList<>();
-
+			/*--------------------------------------------------------------------------*/
 			// First, invoke the BeanDefinitionRegistryPostProcessors that implement PriorityOrdered.
 			// 首先执行 实现了PriorityOrdered接口的BeanDefinitionRegistryPostProcessors
 
-			// 找到所有实现了BeanDefinitionRegistryPostProcessor接口的bean的beanName 注意beanDefinition 是xml里面配置的
-			/*--------------------------------------------------------------------------*/
+			// 找到所有实现了BeanDefinitionRegistryPostProcessor接口的bean的beanName
+			// 例如 ConfigurationClassPostProcessor 实现了 PriorityOrdered
 			String[] postProcessorNames =
 					beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
 			//检测是否实现了PriorityOrdered接口 满足就添加到本次需要执行的集合

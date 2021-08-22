@@ -90,7 +90,7 @@ public class ComponentScanBeanDefinitionParser implements BeanDefinitionParser {
 		// Actually scan for bean definitions and register them.
 		//实际扫描 definitions 并注册
 		ClassPathBeanDefinitionScanner scanner = configureScanner(parserContext, element);
-		// 使用scanner在执行的basePackages包中执行扫描，返回已注册的bean定义
+		// 使用scanner在执行的basePackages包中执行扫描，返回已注册的 beanDefinitions @Component
 		Set<BeanDefinitionHolder> beanDefinitions = scanner.doScan(basePackages);
 		// 组件注册(包括注册一些内部的注解后置处理器，触发注册事件)
 		registerComponents(parserContext.getReaderContext(), beanDefinitions, element);
@@ -146,7 +146,7 @@ public class ComponentScanBeanDefinitionParser implements BeanDefinitionParser {
 			XmlReaderContext readerContext, Set<BeanDefinitionHolder> beanDefinitions, Element element) {
 
 		Object source = readerContext.extractSource(element);
-		//使用注解的tagName 和source 构建CompositeComponentDefinition
+		//使用注解的tagName 和source 构建 CompositeComponentDefinition
 		CompositeComponentDefinition compositeDef = new CompositeComponentDefinition(element.getTagName(), source);
 		//将扫描到的所有 beanDefinition 添加到 compositeDef的 nestedComponents list中
 		for (BeanDefinitionHolder beanDefHolder : beanDefinitions) {
