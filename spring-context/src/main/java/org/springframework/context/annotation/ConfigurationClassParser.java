@@ -209,7 +209,7 @@ class ConfigurationClassParser {
 	protected final void parse(Class<?> clazz, String beanName) throws IOException {
 		processConfigurationClass(new ConfigurationClass(clazz, beanName), DEFAULT_EXCLUSION_FILTER);
 	}
-
+	//解析注解配置类
 	protected final void parse(AnnotationMetadata metadata, String beanName) throws IOException {
 		processConfigurationClass(new ConfigurationClass(metadata, beanName), DEFAULT_EXCLUSION_FILTER);
 	}
@@ -253,7 +253,7 @@ class ConfigurationClassParser {
 		}
 
 		// Recursively process the configuration class and its superclass hierarchy.
-		// 处理配置类，由于配置类可能存在父类(若父类的全类名是以java开头的，则除外)，所有需要将configClass变成sourceClass去解析，然后返回sourceClass的父类。
+		// 处理配置类，由于配置类可能存在父类(若父类的全类名是以java开头的，则除外)，所以需要将configClass变成sourceClass去解析，然后返回sourceClass的父类。
 		// 如果此时父类为空，则不会进行while循环去解析，如果父类不为空，则会循环的去解析父类
 		// SourceClass的意义：简单的包装类，目的是为了以统一的方式去处理带有注解的类，不管这些类是如何加载的
 		// 如果无法理解，可以把它当做一个黑盒，不会影响看spring源码的主流程
@@ -313,7 +313,7 @@ class ConfigurationClassParser {
 				// The config class is annotated with @ComponentScan -> perform the scan immediately
 				// 解析@ComponentScan和@ComponentScans配置的扫描的包所包含的类
 				// 比如 basePackages = com.example, 那么在这一步会扫描出这个包及子包下的class，然后将其解析成BeanDefinition
-				// (BeanDefinition可以理解为等价于BeanDefinitionHolder)
+				// 与 <Context:component-scan 标签解析类似
 				Set<BeanDefinitionHolder> scannedBeanDefinitions =
 						this.componentScanParser.parse(componentScan, sourceClass.getMetadata().getClassName());
 				// Check the set of scanned definitions for any further config classes and parse recursively if needed
@@ -664,6 +664,7 @@ class ConfigurationClassParser {
 								currentSourceClass.getMetadata(), candidate.getMetadata().getClassName());
 						/**
 						 * 如果Import的类型是普通类，则将其当作带有@Configuration的类一样处理
+						 *
 						 * 将candidate构造为ConfigurationClass，标注为importedBy，意味着它是通过被@Import进来的
 						 * 后面处理会用到这个判断将这个普通类注册进DefaultListableBeanFactory
 						 */
@@ -709,6 +710,7 @@ class ConfigurationClassParser {
 	 */
 	private SourceClass asSourceClass(ConfigurationClass configurationClass, Predicate<String> filter) throws IOException {
 		AnnotationMetadata metadata = configurationClass.getMetadata();
+		// StandardAnnotationMetadata 是 AnnotationMetadata 的实现类
 		if (metadata instanceof StandardAnnotationMetadata) {
 			return asSourceClass(((StandardAnnotationMetadata) metadata).getIntrospectedClass(), filter);
 		}
@@ -876,9 +878,11 @@ class ConfigurationClassParser {
 		public void processGroupImports() {
 			for (DeferredImportSelectorGrouping grouping : this.groupings.values()) {
 				Predicate<String> exclusionFilter = grouping.getCandidateFilter();
+				// getImports方法是读取自动化配置类的核心入口，
 				grouping.getImports().forEach(entry -> {
 					ConfigurationClass configurationClass = this.configurationClasses.get(entry.getMetadata());
 					try {
+						// 配置类中可能会包含@Import注解引入的类，通过此方法将引入的类注入
 						processImports(configurationClass, asSourceClass(configurationClass, exclusionFilter),
 								Collections.singleton(asSourceClass(entry.getImportClassName(), exclusionFilter)),
 								exclusionFilter, false);

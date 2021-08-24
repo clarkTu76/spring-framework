@@ -160,7 +160,7 @@ public class ComponentScanBeanDefinitionParser implements BeanDefinitionParser {
 			annotationConfig = Boolean.parseBoolean(element.getAttribute(ANNOTATION_CONFIG_ATTRIBUTE));
 		}
 		if (annotationConfig) {
-			//如果 annotation-config 属性是true ,在指定的注册表中注册所有用于注解的bean后置处理器
+			//如果 annotation-config 属性是true ,在指定的注册表中 注册所有用于注解的bean后置处理器到 beanFactory中
 			Set<BeanDefinitionHolder> processorDefinitions =
 					AnnotationConfigUtils.registerAnnotationConfigProcessors(readerContext.getRegistry(), source);
 			for (BeanDefinitionHolder processorDefinition : processorDefinitions) {
@@ -168,7 +168,7 @@ public class ComponentScanBeanDefinitionParser implements BeanDefinitionParser {
 				compositeDef.addNestedComponent(new BeanComponentDefinition(processorDefinition));
 			}
 		}
-		//触发组件注册事件，默认实现为
+		//触发组件注册事件 默认什么都没干？
 		readerContext.fireComponentRegistered(compositeDef);
 	}
 

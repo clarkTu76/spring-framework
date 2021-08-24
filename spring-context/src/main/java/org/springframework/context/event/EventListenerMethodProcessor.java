@@ -89,10 +89,15 @@ public class EventListenerMethodProcessor
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
-
+		// 从容器中找到所有的EventListenerFactory组件，比如常见的TransactionalEventListenerFactory，用于支持使用@TransactionalEventListener注解的事件监听器
+		// @TransactionalEventListener是一种特殊的@EventListener，它定义的事件监听器应用于事务提交或者回滚的某些特殊时机
+		// 由ProxyTransactionManagementConfiguration注册到容器
+		// DefaultEventListenerFactory最低的优先级，如果其他EventListenerFactory都不支持的时候使用
 		Map<String, EventListenerFactory> beans = beanFactory.getBeansOfType(EventListenerFactory.class, false, false);
 		List<EventListenerFactory> factories = new ArrayList<>(beans.values());
+		// 排序
 		AnnotationAwareOrderComparator.sort(factories);
+		// 保存
 		this.eventListenerFactories = factories;
 	}
 

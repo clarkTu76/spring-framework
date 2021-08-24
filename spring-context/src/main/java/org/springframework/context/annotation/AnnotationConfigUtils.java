@@ -198,14 +198,14 @@ public abstract class AnnotationConfigUtils {
 			beanDefs.add(registerPostProcessor(registry, def, PERSISTENCE_ANNOTATION_PROCESSOR_BEAN_NAME));
 		}
 
-		// 注册 EventListenerMethodProcessor  (internalEventListenerProcessor) 的 RootBeanDefinition
+		// 注册 EventListenerMethodProcessor  (internalEventListenerProcessor)
 		if (!registry.containsBeanDefinition(EVENT_LISTENER_PROCESSOR_BEAN_NAME)) {
 			RootBeanDefinition def = new RootBeanDefinition(EventListenerMethodProcessor.class);
 			def.setSource(source);
 			beanDefs.add(registerPostProcessor(registry, def, EVENT_LISTENER_PROCESSOR_BEAN_NAME));
 		}
 
-		// 注册 DefaultEventListenerFactory (internalEventListenerFactory) 的 RootBeanDefinition
+		// 注册 DefaultEventListenerFactory (internalEventListenerFactory)
 		if (!registry.containsBeanDefinition(EVENT_LISTENER_FACTORY_BEAN_NAME)) {
 			RootBeanDefinition def = new RootBeanDefinition(DefaultEventListenerFactory.class);
 			def.setSource(source);

@@ -68,7 +68,7 @@ final class PostProcessorRegistrationDelegate {
 		// 将已经执行过BFPP存储在set集合中，防止重复执行
 		Set<String> processedBeans = new HashSet<>();
 
-		// 判断beanfactory是否是BeanDefinitionRegistry类型，此处是DefaultListableBeanFactory,实现了BeanDefinitionRegistry接口，所以为true
+		// 判断beanFactory是否是BeanDefinitionRegistry类型，此处是DefaultListableBeanFactory,实现了BeanDefinitionRegistry接口，所以为true
 		if (beanFactory instanceof BeanDefinitionRegistry) {
 			//类型转换
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
@@ -106,7 +106,7 @@ final class PostProcessorRegistrationDelegate {
 			// 首先执行 实现了PriorityOrdered接口的BeanDefinitionRegistryPostProcessors
 
 			// 找到所有实现了BeanDefinitionRegistryPostProcessor接口的bean的beanName
-			// 例如 ConfigurationClassPostProcessor 实现了 PriorityOrdered
+			// 例如 ConfigurationClassPostProcessor 既实现了 bdrpp  也实现了 PriorityOrdered
 			String[] postProcessorNames =
 					beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
 			//检测是否实现了PriorityOrdered接口 满足就添加到本次需要执行的集合

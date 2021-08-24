@@ -291,7 +291,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 					// 处理定义在目标类上的通用注解，包括@Lazy，@Primary，@DependsOn，@Role，@Description
 					AnnotationConfigUtils.processCommonDefinitionAnnotations((AnnotatedBeanDefinition) candidate);
 				}
-				// 检查beanName是否已经注册过，如果注册过，检查是否兼容 没有注册过返回 true
+				// 检查beanName是否已经注册过，如果注册过，检查是否兼容 没有注册过返回 true 一般此时还没注册
 				if (checkCandidate(beanName, candidate)) {
 					// 将当前遍历bean的bean定义和beanName封装成BeanDefinitionHolder
 					BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(candidate, beanName);
