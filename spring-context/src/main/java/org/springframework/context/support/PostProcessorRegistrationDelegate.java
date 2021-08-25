@@ -248,69 +248,96 @@ final class PostProcessorRegistrationDelegate {
 	public static void registerBeanPostProcessors(
 			ConfigurableListableBeanFactory beanFactory, AbstractApplicationContext applicationContext) {
 
+		// 找到所有实现了BeanPostProcessor接口的类
 		String[] postProcessorNames = beanFactory.getBeanNamesForType(BeanPostProcessor.class, true, false);
 
 		// Register BeanPostProcessorChecker that logs an info message when
 		// a bean is created during BeanPostProcessor instantiation, i.e. when
 		// a bean is not eligible for getting processed by all BeanPostProcessors.
+
+		// 记录下BeanPostProcessor的目标计数
+		// 此处为什么要+1呢，原因非常简单，在此方法的最后会添加一个BeanPostProcessorChecker的类
 		int beanProcessorTargetCount = beanFactory.getBeanPostProcessorCount() + 1 + postProcessorNames.length;
+		// 添加BeanPostProcessorChecker(主要用于记录信息)到beanFactory中
 		beanFactory.addBeanPostProcessor(new BeanPostProcessorChecker(beanFactory, beanProcessorTargetCount));
 
 		// Separate between BeanPostProcessors that implement PriorityOrdered,
 		// Ordered, and the rest.
+
+		// 定义存放实现了PriorityOrdered接口的BeanPostProcessor集合
 		List<BeanPostProcessor> priorityOrderedPostProcessors = new ArrayList<>();
+		// 定义存放spring内部的BeanPostProcessor
 		List<BeanPostProcessor> internalPostProcessors = new ArrayList<>();
+		// 定义存放实现了Ordered接口的BeanPostProcessor的name集合
 		List<String> orderedPostProcessorNames = new ArrayList<>();
+		// 定义存放普通的BeanPostProcessor的name集合
 		List<String> nonOrderedPostProcessorNames = new ArrayList<>();
+
 		for (String ppName : postProcessorNames) {
+			// 如果ppName对应的BeanPostProcessor实例实现了PriorityOrdered接口，则获取到ppName对应的BeanPostProcessor的实例添加到priorityOrderedPostProcessors中
 			if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
 				BeanPostProcessor pp = beanFactory.getBean(ppName, BeanPostProcessor.class);
 				priorityOrderedPostProcessors.add(pp);
+				// 如果ppName对应的BeanPostProcessor实例也实现了MergedBeanDefinitionPostProcessor接口，那么则将ppName对应的bean实例添加到internalPostProcessors中
 				if (pp instanceof MergedBeanDefinitionPostProcessor) {
 					internalPostProcessors.add(pp);
 				}
 			}
+			// 如果ppName对应的BeanPostProcessor实例没有实现PriorityOrdered接口，但是实现了Ordered接口，那么将ppName对应的bean实例添加到orderedPostProcessorNames中
 			else if (beanFactory.isTypeMatch(ppName, Ordered.class)) {
 				orderedPostProcessorNames.add(ppName);
 			}
 			else {
+				// 否则将ppName添加到nonOrderedPostProcessorNames中
 				nonOrderedPostProcessorNames.add(ppName);
 			}
 		}
 
 		// First, register the BeanPostProcessors that implement PriorityOrdered.
+		// 首先，对实现了PriorityOrdered接口的BeanPostProcessor实例进行排序操作
 		sortPostProcessors(priorityOrderedPostProcessors, beanFactory);
+		// 注册实现了PriorityOrdered接口的BeanPostProcessor实例添加到beanFactory中
 		registerBeanPostProcessors(beanFactory, priorityOrderedPostProcessors);
 
 		// Next, register the BeanPostProcessors that implement Ordered.
 		List<BeanPostProcessor> orderedPostProcessors = new ArrayList<>(orderedPostProcessorNames.size());
+		// 注册所有实现Ordered的beanPostProcessor
 		for (String ppName : orderedPostProcessorNames) {
+			// 根据ppName找到对应的BeanPostProcessor实例对象
 			BeanPostProcessor pp = beanFactory.getBean(ppName, BeanPostProcessor.class);
+			// 将实现了Ordered接口的BeanPostProcessor添加到orderedPostProcessors集合中
 			orderedPostProcessors.add(pp);
+			// 如果ppName对应的BeanPostProcessor实例也实现了MergedBeanDefinitionPostProcessor接口，那么则将ppName对应的bean实例添加到internalPostProcessors中
 			if (pp instanceof MergedBeanDefinitionPostProcessor) {
 				internalPostProcessors.add(pp);
 			}
 		}
 		sortPostProcessors(orderedPostProcessors, beanFactory);
+		//  注册实现了Ordered接口的BeanPostProcessor实例添加到beanFactory中
 		registerBeanPostProcessors(beanFactory, orderedPostProcessors);
 
 		// Now, register all regular BeanPostProcessors.
+		// 创建存放没有实现PriorityOrdered和Ordered接口的BeanPostProcessor的集合
 		List<BeanPostProcessor> nonOrderedPostProcessors = new ArrayList<>(nonOrderedPostProcessorNames.size());
 		for (String ppName : nonOrderedPostProcessorNames) {
 			BeanPostProcessor pp = beanFactory.getBean(ppName, BeanPostProcessor.class);
 			nonOrderedPostProcessors.add(pp);
+			// 如果ppName对应的BeanPostProcessor实例也实现了MergedBeanDefinitionPostProcessor接口，那么则将ppName对应的bean实例添加到internalPostProcessors中
 			if (pp instanceof MergedBeanDefinitionPostProcessor) {
 				internalPostProcessors.add(pp);
 			}
 		}
+		//  注册没有实现PriorityOrdered和Ordered的BeanPostProcessor实例添加到beanFactory中
 		registerBeanPostProcessors(beanFactory, nonOrderedPostProcessors);
 
 		// Finally, re-register all internal BeanPostProcessors.
 		sortPostProcessors(internalPostProcessors, beanFactory);
+		// 注册所有实现了MergedBeanDefinitionPostProcessor类型的BeanPostProcessor到beanFactory中
 		registerBeanPostProcessors(beanFactory, internalPostProcessors);
 
 		// Re-register post-processor for detecting inner beans as ApplicationListeners,
 		// moving it to the end of the processor chain (for picking up proxies etc).
+		// 注册ApplicationListenerDetector到beanFactory中
 		beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(applicationContext));
 	}
 
@@ -388,6 +415,8 @@ final class PostProcessorRegistrationDelegate {
 
 		@Override
 		public Object postProcessAfterInitialization(Object bean, String beanName) {
+			// 如果bean不是BeanPostProcessor实例 && beanName 不是 完全内部使用 && beanFactory当前注册的BeanPostProcessor
+			// 数量小于 BeanPostProcessor目标数量
 			if (!(bean instanceof BeanPostProcessor) && !isInfrastructureBean(beanName) &&
 					this.beanFactory.getBeanPostProcessorCount() < this.beanPostProcessorTargetCount) {
 				if (logger.isInfoEnabled()) {
@@ -399,9 +428,17 @@ final class PostProcessorRegistrationDelegate {
 			return bean;
 		}
 
+		/**
+		 * 判断 beanName 是否是 完全内部使用
+		 * @param beanName
+		 * @return
+		 */
 		private boolean isInfrastructureBean(@Nullable String beanName) {
+			//如果 beanName不为null && beanFactory包含具有beanName的beanDefinition对象
 			if (beanName != null && this.beanFactory.containsBeanDefinition(beanName)) {
+				//从beanFactory中获取beanName的BeanDefinition对象
 				BeanDefinition bd = this.beanFactory.getBeanDefinition(beanName);
+				//如果bd的角色是完全内部使用，返回true；否则返回false
 				return (bd.getRole() == RootBeanDefinition.ROLE_INFRASTRUCTURE);
 			}
 			return false;

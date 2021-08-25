@@ -552,28 +552,42 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				postProcessBeanFactory(beanFactory);
 
 				// Invoke factory processors registered as beans in the context.
-
+				//调用各种 BeanFactoryPostProcessor
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
+				//注册 bean处理器 ,这里只是注册功能,  真正调用这些处理器的是 getBean 的时候
 				registerBeanPostProcessors(beanFactory);
 
 				// Initialize message source for this context.
+				// 为上下文初始化 message 源，即不同语言的消息体，国际化处理 springMvc中应用
 				initMessageSource();
 
 				// Initialize event multicaster for this context.
+				// 初始化事件监听多路广播器
+				/**
+				 * 1提前准备好多个事件
+				 * 2初始化多播器(此多播器对象应该包含一个监听器的集合)
+				 * 3准备好一系列的监听器
+				 * 4向多播器中注册已有的监听器
+				 * 5准备事件发布，来通知多播器循环调用监听器进行相关逻辑处理
+				 */
 				initApplicationEventMulticaster();
 
 				// Initialize other special beans in specific context subclasses.
+				// 留给子类初始化 bean
 				onRefresh();
 
 				// Check for listener beans and register them.
+				// 在所有的bean中查找listener bean,并注册到消息广播器中
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
+
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
+
 				finishRefresh();
 			}
 
