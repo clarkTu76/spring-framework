@@ -101,14 +101,20 @@ public abstract class AbstractApplicationEventMulticaster
 
 	@Override
 	public void addApplicationListener(ApplicationListener<?> listener) {
+		//加锁一个侦听器帮助对象，保证线程安全  DefaultListenerRetriever 目标监听器集合 的封装帮助类
 		synchronized (this.defaultRetriever) {
 			// Explicitly remove target for a proxy, if registered already,
 			// in order to avoid double invocations of the same listener.
+			// 显示删除代理的目标(如果已经注册)，以避免对同一个监听器的两次调用获取listener背后的singleton目标对象
 			Object singletonTarget = AopProxyUtils.getSingletonTarget(listener);
+			//如果singletonTarget是ApplicationListener实例
 			if (singletonTarget instanceof ApplicationListener) {
+				//将singletonTarget从defaultRetriever.applicationListeners中移除
 				this.defaultRetriever.applicationListeners.remove(singletonTarget);
 			}
+			//将listener添加到defaultRetriever.applicationListeners中
 			this.defaultRetriever.applicationListeners.add(listener);
+			//清空缓存，因为listener可能支持缓存的某些事件类型和源类型，所以要刷新缓存
 			this.retrieverCache.clear();
 		}
 	}
