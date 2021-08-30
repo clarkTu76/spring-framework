@@ -956,6 +956,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// 为上下文初始化类型转换器
 		if (beanFactory.containsBean(CONVERSION_SERVICE_BEAN_NAME) &&
 				beanFactory.isTypeMatch(CONVERSION_SERVICE_BEAN_NAME, ConversionService.class)) {
+			//实例化转换器 仅仅设置 不执行转换
 			beanFactory.setConversionService(
 					beanFactory.getBean(CONVERSION_SERVICE_BEAN_NAME, ConversionService.class));
 		}
@@ -969,7 +970,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// Initialize LoadTimeWeaverAware beans early to allow for registering their transformers early.
-		// 尽早初始化loadTimeWeaverAware bean,以便尽早注册它们的转换器
+		// 尽早初始化loadTimeWeaverAware bean,以便尽早注册它们的转换器  之前prepareBeanFactory中有判断
 		String[] weaverAwareNames = beanFactory.getBeanNamesForType(LoadTimeWeaverAware.class, false, false);
 		for (String weaverAwareName : weaverAwareNames) {
 			getBean(weaverAwareName);

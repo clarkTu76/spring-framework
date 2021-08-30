@@ -54,6 +54,8 @@ public abstract class BeanFactoryUtils {
 
 	/**
 	 * Cache from name with factory bean prefix to stripped name without dereference.
+	 * 从带有工厂 bean 前缀的名称缓存到剥离名称而不取消引用
+	 *
 	 * @since 5.1
 	 * @see BeanFactory#FACTORY_BEAN_PREFIX
 	 */
@@ -80,11 +82,15 @@ public abstract class BeanFactoryUtils {
 	 */
 	public static String transformedBeanName(String name) {
 		Assert.notNull(name, "'name' must not be null");
+		//如果beanName 不以&开头 直接返回
 		if (!name.startsWith(BeanFactory.FACTORY_BEAN_PREFIX)) {
 			return name;
 		}
+		// 从transformedBeanNameCache中获取bean名对应的转换后的名称
 		return transformedBeanNameCache.computeIfAbsent(name, beanName -> {
 			do {
+				// 从beanName的开头位置去掉'&',并重新赋值给beanName，再重新检查是还是以'&'开头，是的话就再截
+				// 知道开头不是以'&'开头后，加入到transformedBeanNameCache中
 				beanName = beanName.substring(BeanFactory.FACTORY_BEAN_PREFIX.length());
 			}
 			while (beanName.startsWith(BeanFactory.FACTORY_BEAN_PREFIX));

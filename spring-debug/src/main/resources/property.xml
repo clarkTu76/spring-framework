@@ -6,8 +6,8 @@
 	   http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
 	   ">
 
-	<context:component-scan base-package="com.example.annotation"/>
-
-	<!-- beanFactory.hasEmbeddedValueResolver() -->
 	<context:property-placeholder location="classpath:db.properties" ></context:property-placeholder>
+
+
+
 </beans>
