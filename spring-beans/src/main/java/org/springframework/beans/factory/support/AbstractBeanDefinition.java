@@ -470,7 +470,9 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 		if (className == null) {
 			return null;
 		}
+		//获取当前bean 的Class对象
 		Class<?> resolvedClass = ClassUtils.forName(className, classLoader);
+		//用Class对象替换之前的String
 		this.beanClass = resolvedClass;
 		return resolvedClass;
 	}
@@ -1148,6 +1150,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	 * @throws BeanDefinitionValidationException in case of validation failure
 	 */
 	protected void prepareMethodOverride(MethodOverride mo) throws BeanDefinitionValidationException {
+		//获取对应类中方法名的个数
 		int count = ClassUtils.getMethodCountForName(getBeanClass(), mo.getMethodName());
 		if (count == 0) {
 			throw new BeanDefinitionValidationException(
@@ -1156,6 +1159,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 		}
 		else if (count == 1) {
 			// Mark override as not overloaded, to avoid the overhead of arg type checking.
+			// 标记methodOverride 暂未被覆盖,避免参数类型检查的开销
 			mo.setOverloaded(false);
 		}
 	}

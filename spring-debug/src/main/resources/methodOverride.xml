@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="apple" class="com.example.method.lookup.Apple" ></bean>
+
+	<bean id="banana" class="com.example.method.lookup.Banana" scope="prototype"></bean>
+
+	<bean id="fruitPlate1" class="com.example.method.lookup.FruitPlate">
+		<lookup-method name="getFruit" bean="apple"/>
+	</bean>
+
+	<bean id="fruitPlate2" class="com.example.method.lookup.FruitPlate">
+		<lookup-method name="getFruit" bean="banana"/>
+	</bean>
+</beans>

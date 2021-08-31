@@ -60,7 +60,9 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 	@Override
 	public Object instantiate(RootBeanDefinition bd, @Nullable String beanName, BeanFactory owner) {
 		// Don't override the class with CGLIB if no overrides.
+		// 没有methodOverride 可以直接实例化
 		if (!bd.hasMethodOverrides()) {
+			// 实例化对象的构造方法
 			Constructor<?> constructorToUse;
 			synchronized (bd.constructorArgumentLock) {
 				constructorToUse = (Constructor<?>) bd.resolvedConstructorOrFactoryMethod;
@@ -88,6 +90,7 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 		}
 		else {
 			// Must generate CGLIB subclass.
+			// 必须生成 cglib 子类
 			return instantiateWithMethodInjection(bd, beanName, owner);
 		}
 	}
