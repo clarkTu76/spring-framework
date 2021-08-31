@@ -3,9 +3,32 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="apple" class="com.example.method.lookup.Apple" ></bean>
 
-	<bean id="banana" class="com.example.method.lookup.Banana" scope="prototype"></bean>
+
+	<!-- 反例 一个单例bean 强引用一个原型bean 而不是lookup-method 哪怕引用的是一个原型bean 获取到的也是一同一个对象 -->
+	<!--<bean id="apple" class="com.example.method.lookup.Apple" >
+		<property name="banana" ref="banana"/>
+	</bean>
+	<bean id="banana" class="com.example.method.lookup.Banana" scope="prototype"></bean>-->
+
+
+
+	<!--当lookup-method 的对象 不是单例时 多次获取的引用的apple 不是同一个对象 -->
+	<!--<bean id="apple" class="com.example.method.lookup.Apple" scope="prototype">
+	</bean>
+
+	<bean id="fruitPlate1" class="com.example.method.lookup.FruitPlate">
+		<lookup-method name="getFruit" bean="apple"/>
+	</bean>-->
+
+
+
+	<!--lookup-method 的作用 当引用的是单例的对象 获取到的是同一个对象-->
+	<bean id="apple" class="com.example.method.lookup.Apple" >
+	</bean>
+
+	<bean id="banana" class="com.example.method.lookup.Banana">
+	</bean>
 
 	<bean id="fruitPlate1" class="com.example.method.lookup.FruitPlate">
 		<lookup-method name="getFruit" bean="apple"/>

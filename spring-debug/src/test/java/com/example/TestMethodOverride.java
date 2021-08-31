@@ -1,5 +1,6 @@
 package com.example;
 
+import com.example.method.lookup.Apple;
 import com.example.method.lookup.Fruit;
 import com.example.method.lookup.FruitPlate;
 import org.junit.jupiter.api.Test;
@@ -20,10 +21,28 @@ public class TestMethodOverride {
 	@Test
 	public void test(){
 		ApplicationContext ac = new ClassPathXmlApplicationContext("methodOverride.xml");
+
+		//反例 一个单例bean 强引用一个原型bean 而不是lookup-method 哪怕引用的是一个原型bean 获取到的也是一同一个对象
+		/*Apple bean = ac.getBean(Apple.class);
+		System.out.println(bean.getBanana());
+		Apple bean2 = ac.getBean(Apple.class);
+		System.out.println(bean2.getBanana());*/
+
+
+
+		//获取的是不是同一个对象  如果apple 是单例的则是同一个对象  如果apple不是单列则不是
 		FruitPlate fruitPlate1 = (FruitPlate) ac.getBean("fruitPlate1");
+		fruitPlate1.getFruit();
+		FruitPlate fruitPlate2 = (FruitPlate) ac.getBean("fruitPlate1");
+		fruitPlate2.getFruit();
+
+
+		/*//lookup-method 的作用
+		FruitPlate fruitPlate1 = (FruitPlate) ac.getBean("fruitPlate1");
+		// 进入intercept
 		fruitPlate1.getFruit();
 
 		FruitPlate fruitPlate2 = (FruitPlate) ac.getBean("fruitPlate2");
-		fruitPlate2.getFruit();
+		fruitPlate2.getFruit();*/
 	}
 }
