@@ -23,7 +23,7 @@ public class TestMethodOverride {
 	public void test(){
 		ApplicationContext ac = new ClassPathXmlApplicationContext("methodOverride.xml");
 
-		//反例 一个单例bean 强引用一个原型bean 而不是lookup-method 哪怕引用的是一个原型bean 获取到的也是一同一个对象
+		//反例 一个单例bean 一般引用一个原型bean 而不是lookup-method 哪怕引用的是一个原型bean 获取到的也是一同一个对象
 		/*Apple bean = ac.getBean(Apple.class);
 		System.out.println(bean.getBanana());
 		Apple bean2 = ac.getBean(Apple.class);
