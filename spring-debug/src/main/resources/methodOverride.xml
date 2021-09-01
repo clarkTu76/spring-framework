@@ -24,7 +24,7 @@
 
 
 	<!--lookup-method 的作用 当引用的是单例的对象 获取到的是同一个对象-->
-	<bean id="apple" class="com.example.method.lookup.Apple" >
+	<!--<bean id="apple" class="com.example.method.lookup.Apple" >
 	</bean>
 
 	<bean id="banana" class="com.example.method.lookup.Banana">
@@ -36,5 +36,15 @@
 
 	<bean id="fruitPlate2" class="com.example.method.lookup.FruitPlate">
 		<lookup-method name="getFruit" bean="banana"/>
+	</bean>-->
+
+
+	<!-- replace-method 的作用 目标方法的执行替换 原bean的方法不执行 改为执行替换方法 -->
+	<bean id="replaceDog" class="com.example.method.replace.ReplaceDog" >
 	</bean>
+
+	<bean id="originalDog" class="com.example.method.replace.OriginalDog">
+		<replaced-method name="sayHello" replacer="replaceDog"/>
+	</bean>
+
 </beans>

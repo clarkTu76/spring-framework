@@ -23,6 +23,8 @@ import org.springframework.beans.PropertyValues;
 import org.springframework.lang.Nullable;
 
 /**
+ * 继承自BeanPostProcessor，添加了实例化前，实例化后，属性注入后的处理方法
+ *
  * Subinterface of {@link BeanPostProcessor} that adds a before-instantiation callback,
  * and a callback after instantiation but before explicit properties are set or
  * autowiring occurs.

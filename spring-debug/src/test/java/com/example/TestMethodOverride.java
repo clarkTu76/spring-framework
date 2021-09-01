@@ -3,6 +3,7 @@ package com.example;
 import com.example.method.lookup.Apple;
 import com.example.method.lookup.Fruit;
 import com.example.method.lookup.FruitPlate;
+import com.example.method.replace.OriginalDog;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -31,10 +32,10 @@ public class TestMethodOverride {
 
 
 		//获取的是不是同一个对象  如果apple 是单例的则是同一个对象  如果apple不是单列则不是
-		FruitPlate fruitPlate1 = (FruitPlate) ac.getBean("fruitPlate1");
+		/*FruitPlate fruitPlate1 = (FruitPlate) ac.getBean("fruitPlate1");
 		fruitPlate1.getFruit();
 		FruitPlate fruitPlate2 = (FruitPlate) ac.getBean("fruitPlate1");
-		fruitPlate2.getFruit();
+		fruitPlate2.getFruit();*/
 
 
 		/*//lookup-method 的作用
@@ -44,5 +45,11 @@ public class TestMethodOverride {
 
 		FruitPlate fruitPlate2 = (FruitPlate) ac.getBean("fruitPlate2");
 		fruitPlate2.getFruit();*/
+
+
+		//replace-method 的作用 目标方法的执行替换 原bean的方法不执行 改为执行替换方法
+		OriginalDog originalDog = (OriginalDog) ac.getBean("originalDog");
+		originalDog.sayHello();
+
 	}
 }

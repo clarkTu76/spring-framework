@@ -270,6 +270,7 @@ public class CglibSubclassingInstantiationStrategy extends SimpleInstantiationSt
 			Assert.state(ro != null, "ReplaceOverride not found");
 			// TODO could cache if a singleton for minor performance optimization
 			MethodReplacer mr = this.owner.getBean(ro.getMethodReplacerBeanName(), MethodReplacer.class);
+			//返回目标bean 执行目标bean的重新实现方法
 			return mr.reimplement(obj, method, args);
 		}
 	}

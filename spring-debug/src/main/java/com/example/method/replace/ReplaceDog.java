@@ -10,7 +10,7 @@ public class ReplaceDog implements MethodReplacer {
 
 	@Override
 	public Object reimplement(Object obj, Method method, Object[] args) throws Throwable {
-		System.out.println("ReplaceDog");
+		System.out.println("ReplaceDog::reimplement");
 		Arrays.stream(args).forEach(str -> System.out.println("参数: "+str));
 		return obj;
 	}

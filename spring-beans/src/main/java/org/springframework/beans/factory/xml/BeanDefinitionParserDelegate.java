@@ -745,12 +745,18 @@ public class BeanDefinitionParserDelegate {
 		NodeList nl = beanEle.getChildNodes();
 		for (int i = 0; i < nl.getLength(); i++) {
 			Node node = nl.item(i);
+			//判断是否是候选元素 且 (是默认空间元素 ||父节点是非默认空间元素)  nodeName是否是 lookup-method
 			if (isCandidateElement(node) && nodeNameEquals(node, LOOKUP_METHOD_ELEMENT)) {
 				Element ele = (Element) node;
+				//获取覆盖的方法名 例如 getFruit
 				String methodName = ele.getAttribute(NAME_ATTRIBUTE);
+				//获取bean 的引用 例如 apple
 				String beanRef = ele.getAttribute(BEAN_ELEMENT);
+				//生成一个lookup覆盖
 				LookupOverride override = new LookupOverride(methodName, beanRef);
+
 				override.setSource(extractSource(ele));
+				//添加到 copyOnWriteArraySet 中
 				overrides.addOverride(override);
 			}
 		}
