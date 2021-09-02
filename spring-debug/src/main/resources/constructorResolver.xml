@@ -6,8 +6,12 @@
 
 	<context:component-scan base-package="com.example.constructor"/>
 
-	<bean id="person" class="com.example.constructor.Person">
-		<property name="id" value="1"/>
-		<property name="name" value="zhangsan"/>
+	<!--原型才有效果-->
+	<bean id="person" class="com.example.constructor.Person" scope="prototype">
+		<!--<property name="id" value="1"/>
+		<property name="name" value="zhangsan"/>-->
+
+		<constructor-arg name="id" value="1"/>
+		<constructor-arg name="name" value="lisi"/>
 	</bean>
 </beans>

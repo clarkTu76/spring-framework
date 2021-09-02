@@ -1,14 +1,16 @@
 package com.example.constructor;
 
 
+import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.stereotype.Component;
 
 /**
  * 构造方法的选择测试
  */
 @Component
-public class Person {
+public class Person implements BeanClassLoaderAware {
 
+	private ClassLoader classLoader;
 	private Integer id;
 	private String name;
 
@@ -60,5 +62,10 @@ public class Person {
 				"id=" + id +
 				", name='" + name + '\'' +
 				'}';
+	}
+
+	@Override
+	public void setBeanClassLoader(ClassLoader classLoader) {
+		this.classLoader = classLoader;
 	}
 }

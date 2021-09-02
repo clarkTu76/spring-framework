@@ -492,7 +492,7 @@ class ConstructorResolver {
 
 			// 定义一个用于存储候选方法的集合
 			List<Method> candidates = null;
-			// 如果mbd所配置工厂方法时唯一
+			// 如果mbd所配置工厂方法是唯一
 			if (mbd.isFactoryMethodUnique) {
 				if (factoryMethodToUse == null) {
 					// 获取mbd解析后的工厂方法对象
@@ -513,7 +513,7 @@ class ConstructorResolver {
 				Method[] rawCandidates = getCandidateMethods(factoryClass, mbd);
 				// 遍历rawCandidates,元素名为candidate
 				for (Method candidate : rawCandidates) {
-					// 如果candidate的修饰符与isStatic一致且candidate有资格作为mdb的工厂方法
+					// 如果candidate的修饰符与isStatic一致 且 candidate.getName().equals(getFactoryMethodName()
 					if (Modifier.isStatic(candidate.getModifiers()) == isStatic && mbd.isFactoryMethod(candidate)) {
 						// 将candidate添加到candidateList中
 						candidates.add(candidate);
@@ -522,7 +522,7 @@ class ConstructorResolver {
 			}
 
 			// 候选方法只有一个且没有构造函数时，就直接使用该候选方法生成与beanName对应的Bean对象封装到bw中返回出去
-			// 如果candidateList只有一个元素且没有传入构造函数值且mbd也没有构造函数参数值
+			// 如果candidateList只有一个元素 且没有传入构造函数值且 mbd也没有构造函数参数值
 			if (candidates.size() == 1 && explicitArgs == null && !mbd.hasConstructorArgumentValues()) {
 				// 获取candidateList中唯一的方法
 				Method uniqueCandidate = candidates.get(0);
@@ -597,7 +597,7 @@ class ConstructorResolver {
 					// 定义一个封装参数数组的ArgumentsHolder对象
 					ArgumentsHolder argsHolder;
 
-					// 获取candidate的参数类型数组
+					// 获取candidate的参数类型数组 [class java.lang.String,int]
 					Class<?>[] paramTypes = candidate.getParameterTypes();
 					if (explicitArgs != null) {
 						// Explicit arguments given -> arguments length must match exactly.
@@ -619,7 +619,7 @@ class ConstructorResolver {
 							// 获取beanFactory的参数名发现器
 							ParameterNameDiscoverer pnd = this.beanFactory.getParameterNameDiscoverer();
 							if (pnd != null) {
-								// 通过pnd解析candidate的参数名
+								// 通过参数名发现器 解析candidate的参数名 eg: [id,name]
 								paramNames = pnd.getParameterNames(candidate);
 							}
 							// 将resolvedValues转换成一个封装着参数数组ArgumentsHolder实例，当candidate只有一个时，支持可在抛
@@ -648,7 +648,7 @@ class ConstructorResolver {
 					// mbd支持的构造函数解析模式,默认使用宽松模式:
 					// 1. 严格模式如果摸棱两可的构造函数在转换参数时都匹配，则抛出异常
 					// 2. 宽松模式将使用"最接近类型匹配"的构造函数
-					// 如果bd支持的构造函数解析模式时宽松模式,引用获取类型差异权重值，否则引用获取Assignabliity权重值
+					// 如果bd支持的构造函数解析模式时宽松模式,引用获取类型差异权重值，否则引用获取 Assignability 权重值
 					int typeDiffWeight = (mbd.isLenientConstructorResolution() ?
 							argsHolder.getTypeDifferenceWeight(paramTypes) : argsHolder.getAssignabilityWeight(paramTypes));
 					// Choose this factory method if it represents the closest match.
@@ -742,7 +742,7 @@ class ConstructorResolver {
 						"exists and that it is " +
 						(isStatic ? "static" : "non-static") + ".");
 			}
-			// 如果factoryMethodToUse时无返回值方法
+			// 如果factoryMethodToUse是无返回值方法
 			else if (void.class == factoryMethodToUse.getReturnType()) {
 				throw new BeanCreationException(mbd.getResourceDescription(), beanName,
 						"Invalid factory method '" + mbd.getFactoryMethodName() + "' on class [" +
@@ -860,7 +860,7 @@ class ConstructorResolver {
 				resolvedValues.addIndexedArgumentValue(index, resolvedValueHolder);
 			}
 		}
-		// 遍历cargs的泛型参数值的列表,元素为ConstructorArgumentValues.ValueHolder对象
+		// 遍历cargs的泛型参数值的列表
 		for (ConstructorArgumentValues.ValueHolder valueHolder : cargs.getGenericArgumentValues()) {
 			// 如果valueHolder已经包含转换后的值
 			if (valueHolder.isConverted()) {
@@ -868,10 +868,10 @@ class ConstructorResolver {
 				resolvedValues.addGenericArgumentValue(valueHolder);
 			}
 			else {
-				// 使用valueResolver解析出valueHolder实例的构造函数参数值所封装的对象
+				// 使用valueResolver解析出valueHolder实例的构造函数参数值所封装的对象 eg:lisi
 				Object resolvedValue =
 						valueResolver.resolveValueIfNecessary("constructor argument", valueHolder.getValue());
-				// 使用valueHolder所封装的type,name属性以及解析出来的resovledValue构造出一个ConstructorArgumentValues.ValueHolder对象
+				// 使用valueHolder所封装的type,name属性以及解析出来的 resolvedValue 构造出一个ConstructorArgumentValues.ValueHolder对象
 				ConstructorArgumentValues.ValueHolder resolvedValueHolder = new ConstructorArgumentValues.ValueHolder(
 						resolvedValue, valueHolder.getType(), valueHolder.getName());
 				// 将valueHolder作为resolvedValueHolder的配置源对象设置到resolvedValueHolder中
@@ -897,7 +897,7 @@ class ConstructorResolver {
 
 		// 获取bean工厂的自定义的TypeConverter
 		TypeConverter customConverter = this.beanFactory.getCustomTypeConverter();
-		// 如果customConverter不为null,converter就引用customeConverter，否则引用bw
+		// 如果customConverter不为null,converter就引用customConverter，否则引用bw
 		TypeConverter converter = (customConverter != null ? customConverter : bw);
 
 		// 根据paramTypes的数组长度构建一个ArgumentsHolder实例，用于保存解析后的参数值

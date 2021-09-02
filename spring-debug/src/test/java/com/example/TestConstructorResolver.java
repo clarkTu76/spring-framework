@@ -5,11 +5,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class TestConstructor {
+public class TestConstructorResolver {
 
 	@Test
 	public void test(){
-		ApplicationContext ac = new ClassPathXmlApplicationContext("constructor.xml");
+		ApplicationContext ac = new ClassPathXmlApplicationContext("constructorResolver.xml");
 		Person bean = ac.getBean(Person.class);
 
 	}

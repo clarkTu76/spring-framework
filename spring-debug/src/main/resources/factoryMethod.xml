@@ -4,6 +4,7 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	<!--静态工厂-->
 	<bean id="person" class="com.example.factoryMethod.PersonStaticFactory" factory-method="getPerson">
+		<!-- 会存入 bd.constructorArgumentValues -->
 		<constructor-arg value="lisi"/>
 	</bean>
 
