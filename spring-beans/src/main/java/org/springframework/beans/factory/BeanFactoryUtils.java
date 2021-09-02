@@ -54,7 +54,7 @@ public abstract class BeanFactoryUtils {
 
 	/**
 	 * Cache from name with factory bean prefix to stripped name without dereference.
-	 * 从带有工厂 bean 前缀的名称缓存到剥离名称而不取消引用
+	 * 从带有factoryBean 前缀的名称缓存到剥离名称而不取消引用
 	 *
 	 * @since 5.1
 	 * @see BeanFactory#FACTORY_BEAN_PREFIX
