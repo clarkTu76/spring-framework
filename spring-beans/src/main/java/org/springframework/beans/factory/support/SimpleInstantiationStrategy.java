@@ -109,6 +109,7 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 	public Object instantiate(RootBeanDefinition bd, @Nullable String beanName, BeanFactory owner,
 			final Constructor<?> ctor, Object... args) {
 
+		// 检查bd对象是否有MethodOverrides对象，没有的话则直接实例化对象
 		if (!bd.hasMethodOverrides()) {
 			if (System.getSecurityManager() != null) {
 				// use own privileged to change accessibility (when security is on)
@@ -117,9 +118,11 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 					return null;
 				});
 			}
+			// 通过反射实例化对象
 			return BeanUtils.instantiateClass(ctor, args);
 		}
 		else {
+			// 如果有methodOverride对象，则调用方法来进行实现
 			return instantiateWithMethodInjection(bd, beanName, owner, ctor, args);
 		}
 	}

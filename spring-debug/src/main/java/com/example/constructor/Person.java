@@ -4,6 +4,9 @@ package com.example.constructor;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 /**
  * 构造方法的选择测试
  */
@@ -13,6 +16,17 @@ public class Person implements BeanClassLoaderAware {
 	private ClassLoader classLoader;
 	private Integer id;
 	private String name;
+
+	@PostConstruct
+	public void init(){
+		System.out.println("Person::init()");
+	}
+
+	@PreDestroy
+	public void destroy(){
+		System.out.println("Person::destroy()");
+	}
+
 
 	public Person() {
 		System.out.println("Person() 构造方法");
