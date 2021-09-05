@@ -1444,7 +1444,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// state of the bean before properties are set. This can be used, for example,
 		// to support styles of field injection.
 
-		// 给任何实现了InstantiationAwareBeanPostProcessors的子类机会去修改bean的状态再设置属性之前，
+		// 给任何实现了InstantiationAwareBeanPostProcessors的子类机会去修改bean的状态在设置属性之前，
 		// 可以被用来支持类型的字段注入
 
 		// 否是"synthetic"。一般是指只有AOP相关的pointCut配置或者Advice配置才会将 synthetic设置为true
@@ -1488,7 +1488,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			pvs = newPvs;
 		}
 
-		//工厂是否拥有InstiationAwareBeanPostProcessor
+		//工厂是否拥有InstantiationAwareBeanPostProcessor
 		boolean hasInstAwareBpps = hasInstantiationAwareBeanPostProcessors();
 		//mbd.getDependencyCheck()，默认返回 DEPENDENCY_CHECK_NONE，表示 不检查
 		//是否需要依赖检查
@@ -1512,14 +1512,14 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
 					//postProcessProperties:在工厂将给定的属性值应用到给定Bean之前，对它们进行后处理，不需要任何属性扫描符。该回调方法在未来的版本会被删掉。
 					// -- 取而代之的是 postProcessPropertyValues 回调方法。
-					// 让ibp对pvs增加对bw的Bean对象的propertyValue，或编辑pvs的proertyValue
+					// 让ibp对pvs增加对bw的Bean对象的propertyValue，或编辑pvs的propertyValue
 					PropertyValues pvsToUse = ibp.postProcessProperties(pvs, bw.getWrappedInstance(), beanName);
 					//如果pvs为null
 					if (pvsToUse == null) {
 						//如果filteredPds为null
 						if (filteredPds == null) {
 							//mbd.allowCaching:是否允许缓存，默认时允许的。缓存除了可以提高效率以外，还可以保证在并发的情况下，返回的PropertyDesciptor[]永远都是同一份
-							//从bw提取一组经过筛选的PropertyDesciptor,排除忽略的依赖项或忽略项上的定义的属性
+							//从bw提取一组经过筛选的PropertyDescriptor,排除忽略的依赖项或忽略项上的定义的属性
 							filteredPds = filterPropertyDescriptorsForDependencyCheck(bw, mbd.allowCaching);
 						}
 						//postProcessPropertyValues:一般进行检查是否所有依赖项都满足，例如基于"Require"注释在 bean属性 setter，
