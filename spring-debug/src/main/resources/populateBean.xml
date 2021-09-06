@@ -8,6 +8,17 @@
 	   http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd
 ">
 
+	<!-- 依赖bean的关系解析 -->
+	<!--<bean id="person" class="com.example.populateBean.Person" autowire="byName" />
+	<bean id="person2" class="com.example.populateBean.Person" autowire="byType" />
+	<bean id="address" class="com.example.populateBean.Address" >
+		<property name="province" value="安徽"></property>
+		<property name="city" value="宣城"></property>
+		<property name="town" value="水阳"></property>
+	</bean>-->
+
+
+
 	<!--给复杂类型的赋值都在property标签内进行-->
 	<bean id="person" class="com.example.populateBean.Person">
 		<property name="name">
@@ -82,7 +93,7 @@
 	<util:map id="myMap">
 		<entry key="key1" value="value1"></entry>
 		<entry key="key2" value-ref="book2"></entry>
-		<entry key="key03">
+		<entry key="key3">
 			<bean class="com.example.populateBean.Book">
 				<property name="name" value="西游记" ></property>
 				<property name="author" value="吴承恩" ></property>

@@ -5,6 +5,13 @@ import org.springframework.beans.factory.config.InstantiationAwareBeanPostProces
 
 public class PersonInstantiationAwareBeanPostProcessor implements InstantiationAwareBeanPostProcessor {
 
+	/**
+	 * 如果不想让属性被后续的方法覆盖 返回 false
+	 * @param bean the bean instance created, with properties not having been set yet
+	 * @param beanName the name of the bean
+	 * @return
+	 * @throws BeansException
+	 */
 	@Override
 	public boolean postProcessAfterInstantiation(Object bean, String beanName) throws BeansException {
 		System.out.println("PersonInstantiationAwareBeanPostProcessor 调用执行");

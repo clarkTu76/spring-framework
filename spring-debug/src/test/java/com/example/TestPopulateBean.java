@@ -3,7 +3,7 @@ package com.example;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class TestPopulate {
+public class TestPopulateBean {
 
 	@org.junit.jupiter.api.Test
 	public void test(){
