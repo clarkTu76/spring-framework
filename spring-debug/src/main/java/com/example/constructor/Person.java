@@ -2,6 +2,8 @@ package com.example.constructor;
 
 
 import org.springframework.beans.factory.BeanClassLoaderAware;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -11,15 +13,20 @@ import javax.annotation.PreDestroy;
  * 构造方法的选择测试
  */
 @Component
-public class Person implements BeanClassLoaderAware {
+public class Person implements BeanClassLoaderAware, Ordered, InitializingBean {
 
 	private ClassLoader classLoader;
 	private Integer id;
 	private String name;
 
-	@PostConstruct
+
 	public void init(){
 		System.out.println("Person::init()");
+	}
+
+	@PostConstruct
+	public void postConstruct(){
+		System.out.println("Person::postConstruct()");
 	}
 
 	@PreDestroy
@@ -81,5 +88,15 @@ public class Person implements BeanClassLoaderAware {
 	@Override
 	public void setBeanClassLoader(ClassLoader classLoader) {
 		this.classLoader = classLoader;
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		System.out.println("Person::afterPropertiesSet");
+	}
+
+	@Override
+	public int getOrder() {
+		return 0;
 	}
 }

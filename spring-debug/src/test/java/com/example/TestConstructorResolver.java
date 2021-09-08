@@ -11,6 +11,6 @@ public class TestConstructorResolver {
 	public void test(){
 		ApplicationContext ac = new ClassPathXmlApplicationContext("constructorResolver.xml");
 		Person bean = ac.getBean(Person.class);
-
+		System.out.println(bean);
 	}
 }

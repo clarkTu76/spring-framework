@@ -370,6 +370,7 @@ public class InitDestroyAnnotationBeanPostProcessor
 					if (logger.isTraceEnabled()) {
 						logger.trace("Invoking init method on bean '" + beanName + "': " + element.getMethod());
 					}
+					//调用 @PostConstruct 修饰的方法
 					element.invoke(target);
 				}
 			}

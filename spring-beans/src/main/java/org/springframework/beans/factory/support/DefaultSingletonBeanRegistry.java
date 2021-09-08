@@ -213,7 +213,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 							if (singletonFactory != null) {
 								// 如果存在单例对象工厂，则通过工厂创建一个单例对象
 								singletonObject = singletonFactory.getObject();
-								// 记录在缓存中，二级缓存和三级缓存的对象不能同时存在
+								// 记录在二缓存中，三级转到二级，二级缓存和三级缓存的对象不能同时存在 默认其实就是A实例化之后的bean
 								this.earlySingletonObjects.put(beanName, singletonObject);
 								// 从三级缓存中移除
 								this.singletonFactories.remove(beanName);
