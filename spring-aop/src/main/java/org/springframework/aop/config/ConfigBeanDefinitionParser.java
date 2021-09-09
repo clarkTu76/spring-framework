@@ -104,7 +104,7 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 				new CompositeComponentDefinition(element.getTagName(), parserContext.extractSource(element));
 		//arrayDeque.push()
 		parserContext.pushContainingComponent(compositeDef);
-
+		//注册 beanName为internalAutoProxyCreator 的 BeanDefinition beanClass为 AspectJAwareAdvisorAutoProxyCreator 注入参事自动代理创建者？
 		configureAutoProxyCreator(parserContext, element);
 
 		List<Element> childElts = DomUtils.getChildElements(element);
@@ -120,7 +120,7 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 				parseAspect(elt, parserContext);
 			}
 		}
-
+		//此时pop让集合成为了 null
 		parserContext.popAndRegisterContainingComponent();
 		return null;
 	}
@@ -232,7 +232,7 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 						//添加 aspectName 到beanReferences，一个aspectName只添加一次 eg:logUtil
 						beanReferences.add(new RuntimeBeanReference(aspectName));
 					}
-
+					//解析并注册AspectJPointcutAdvisor 的 BeanDefinition 且 生成对应beanReference
 					AbstractBeanDefinition advisorDefinition = parseAdvice(
 							aspectName, i, aspectElement, (Element) node, parserContext, beanDefinitions, beanReferences);
 
@@ -348,7 +348,7 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 					adviceElement, parserContext, aspectName, order, methodDefinition, aspectFactoryDef,
 					beanDefinitions, beanReferences);
 
-			// configure the advisor
+			// configure the advisor  切点通知器
 			RootBeanDefinition advisorDefinition = new RootBeanDefinition(AspectJPointcutAdvisor.class);
 			advisorDefinition.setSource(parserContext.extractSource(adviceElement));
 			advisorDefinition.getConstructorArgumentValues().addGenericArgumentValue(adviceDef);
