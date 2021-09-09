@@ -143,7 +143,9 @@ public class XmlReaderContext extends ReaderContext {
 	 * @see BeanDefinitionRegistry#registerBeanDefinition
 	 */
 	public String registerWithGeneratedName(BeanDefinition beanDefinition) {
+		//会给AspectJPointcutAdvisor 添加尾号 #0...
 		String generatedName = generateBeanName(beanDefinition);
+		//把bd注册到beanFactory中
 		getRegistry().registerBeanDefinition(generatedName, beanDefinition);
 		return generatedName;
 	}

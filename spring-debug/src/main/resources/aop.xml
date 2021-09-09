@@ -5,9 +5,9 @@
 
 	<bean id="logUtil" class="com.example.aop.util.LogUtil"></bean>
 	<bean id="myCalculator" class="com.example.aop.service.MyCalculator"></bean>
-	<!--配置aop-->
+	<!--xml配置aop-->
 	<aop:config>
-		<aop:pointcut id="globalPoint" expression="execution( Integer com.example.aop.service.MyCalculator.*(..))"/>
+		<!--<aop:pointcut id="globalPoint" expression="execution( Integer com.example.aop.service.MyCalculator.*(..))"/>-->
 		<!--声明切面-->
 		<aop:aspect ref="logUtil">
 			<!--将通用的表达式给抽取出来-->
@@ -21,4 +21,6 @@
 		</aop:aspect>
 	</aop:config>
 
+	<!-- 注解使用aop -->
+	<!--<aop:aspectj-autoproxy></aop:aspectj-autoproxy>-->
 </beans>
