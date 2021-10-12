@@ -662,7 +662,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		getEnvironment().validateRequiredProperties();
 
 		// Store pre-refresh ApplicationListeners...
-		//判断刷新前的应用程序监听器集合是否为空，如果为空则将监听器添加到集合中
+		//判断刷新前的应用程序监听器集合是否null，如果为空则将监听器添加到集合中
 		if (this.earlyApplicationListeners == null) {
 			this.earlyApplicationListeners = new LinkedHashSet<>(this.applicationListeners);
 		}
