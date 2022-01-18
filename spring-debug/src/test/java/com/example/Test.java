@@ -5,6 +5,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Test {
 
+	/**
+	 * BeanDefinition 加载
+	 * loadBeanDefinitions doLoadBeanDefinitions
+	 * registerBeanDefinitions  doRegisterBeanDefinitions
+	 * parseBeanDefinitions   parseDefaultElement
+	 *
+	 */
 	@org.junit.jupiter.api.Test
 	public void test(){
 		//xml解析

@@ -75,10 +75,10 @@ public class StandardEnvironment extends AbstractEnvironment {
 	 */
 	@Override
 	protected void customizePropertySources(MutablePropertySources propertySources) {
-		//cpu架构等属性 操作系统windows linux 文件分割符 java版本
+		//cpu架构等属性 操作系统windows linux 文件分割符 java版本  调用的是System.getProperties()
 		propertySources.addLast(
 				new PropertiesPropertySource(SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME, getSystemProperties()));
-		//JAVA_HOME GRADLE_HOME  USER_NAME等 环境变量 的值
+		//JAVA_HOME GRADLE_HOME  USER_NAME等 环境变量 的值  调用的是System.getenv()
 		propertySources.addLast(
 				new SystemEnvironmentPropertySource(SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, getSystemEnvironment()));
 	}
