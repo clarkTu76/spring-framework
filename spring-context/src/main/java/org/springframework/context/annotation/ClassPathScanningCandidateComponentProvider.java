@@ -431,7 +431,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 				//判断文件存不存在
 				if (resource.isReadable()) {
 					try {
-
+						//resource 转成 SimpleMetaDataReader
 						MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource);
 						//判断是否是候选组件 会判断AnnotationMetadata中是否包含Component
 						if (isCandidateComponent(metadataReader)) {

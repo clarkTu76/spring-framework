@@ -59,7 +59,7 @@ public abstract class AbstractTypeHierarchyTraversingFilter implements TypeFilte
 
 		// This method optimizes avoiding unnecessary creation of ClassReaders
 		// as well as visiting over those readers.
-		//查看元数据中是否有 @Component注解
+		//查看元数据中是否有 @Component注解   AnnotationTypeFilter.annotationType.getName = 'org.springframework.stereotype.Component'
 		if (matchSelf(metadataReader)) {
 			return true;
 		}
