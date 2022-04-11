@@ -167,7 +167,7 @@ public abstract class AnnotationConfigUtils {
 			def.setSource(source);
 			beanDefs.add(registerPostProcessor(registry, def, CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME));
 		}
-		//注册 AutowiredAnnotationBeanPostProcessor（internalAutowiredAnnotationProcessor）
+		//注册 AutowiredAnnotationBeanPostProcessor (internalAutowiredAnnotationProcessor)
 		if (!registry.containsBeanDefinition(AUTOWIRED_ANNOTATION_PROCESSOR_BEAN_NAME)) {
 			RootBeanDefinition def = new RootBeanDefinition(AutowiredAnnotationBeanPostProcessor.class);
 			def.setSource(source);

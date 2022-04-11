@@ -60,7 +60,7 @@ public abstract class AbstractBeanDefinitionParser implements BeanDefinitionPars
 	@Override
 	@Nullable
 	public final BeanDefinition parse(Element element, ParserContext parserContext) {
-		//解析element 放到beanDefinitionBuilder中 并生成BeanDefinition
+		//解析element 放到beanDefinitionBuilder中 并生成GenericBeanDefinition
 		AbstractBeanDefinition definition = parseInternal(element, parserContext);
 		if (definition != null && !parserContext.isNested()) {
 			try {
@@ -71,6 +71,7 @@ public abstract class AbstractBeanDefinitionParser implements BeanDefinitionPars
 									+ "' when used as a top-level tag", element);
 				}
 				String[] aliases = null;
+				//是否将名称解析成别名
 				if (shouldParseNameAsAliases()) {
 					String name = element.getAttribute(NAME_ATTRIBUTE);
 					if (StringUtils.hasLength(name)) {
@@ -81,6 +82,7 @@ public abstract class AbstractBeanDefinitionParser implements BeanDefinitionPars
 				BeanDefinitionHolder holder = new BeanDefinitionHolder(definition, id, aliases);
 				//注册bean定义信息
 				registerBeanDefinition(holder, parserContext.getRegistry());
+				//是否应该触发事件
 				if (shouldFireEvents()) {
 					//
 					BeanComponentDefinition componentDefinition = new BeanComponentDefinition(holder);

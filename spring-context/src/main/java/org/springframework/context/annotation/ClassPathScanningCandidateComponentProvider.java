@@ -438,7 +438,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 							//如果是候选组件 就根据metadata 和resource 创建beanDefinition
 							ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
 							sbd.setSource(resource);
-							//判断类的一些信息 是否独立的类等等
+							//判断类的一些信息 是否独立的类等等  非独立的类只设置source 不加入候选组件BeanDefinition Set
 							if (isCandidateComponent(sbd)) {
 								if (debugEnabled) {
 									logger.debug("Identified candidate component class: " + resource);
@@ -533,7 +533,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 */
 	protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
 		AnnotationMetadata metadata = beanDefinition.getMetadata();
-		// 判断是否是封闭类 或 独立的内部类  是否是具体的(不是接口  不是AbsClass)  如果是AbsClass 是否包含 @LookUp
+		//  判断是否是独立的类 && 是具体的类(不是接口 不是AbsClass)       ||     如果是抽象类判断是否包含 @LookUp
 		return (metadata.isIndependent() && (metadata.isConcrete() ||
 				(metadata.isAbstract() && metadata.hasAnnotatedMethods(Lookup.class.getName()))));
 	}
