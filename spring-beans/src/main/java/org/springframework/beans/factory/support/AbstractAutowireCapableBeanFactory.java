@@ -629,7 +629,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		if (earlySingletonExposure) {
-			// 从缓存中获取具体的对象
+			// 从缓存中获取具体的对象 注意这里传入的是allowEarlyReference=false
 			Object earlySingletonReference = getSingleton(beanName, false);
 			// earlySingletonReference只有在检测到有循环依赖的情况下才会不为空
 			if (earlySingletonReference != null) {
@@ -1867,7 +1867,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					//将writerMethod封装到DependencyDescriptor对象
 					originalValue = new DependencyDescriptor(new MethodParameter(writeMethod, 0), true);
 				}
-				//交由valueResolver根据pv解析出originalValue所封装的对象
+				//循环依赖路径
 				Object resolvedValue = valueResolver.resolveValueIfNecessary(pv, originalValue);
 				//默认转换后的值是刚解析出来的值
 				Object convertedValue = resolvedValue;

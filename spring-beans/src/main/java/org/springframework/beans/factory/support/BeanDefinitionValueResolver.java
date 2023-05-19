@@ -114,7 +114,7 @@ class BeanDefinitionValueResolver {
 		if (value instanceof RuntimeBeanReference) {
 			//将value强转成RuntimeBeanReference对象
 			RuntimeBeanReference ref = (RuntimeBeanReference) value;
-			//解析出对应ref所封装的Bean元信息(即Bean名,Bean类型)的Bean对象:
+			//循环依赖路径   解析出对应ref所封装的Bean元信息(即Bean名,Bean类型)的Bean对象:
 			return resolveReference(argName, ref);
 		}
 		//RuntimeBeanNameReference对应于<idref bean="bea" />.
@@ -418,7 +418,7 @@ class BeanDefinitionValueResolver {
 				else {
 					//让resolvedName引用ref所包装的Bean名
 					resolvedName = String.valueOf(doEvaluate(ref.getBeanName()));
-					//获取resolvedName的Bean对象
+					//循环依赖路径 获取resolvedName的Bean对象
 					bean = this.beanFactory.getBean(resolvedName);
 				}
 				//注册beanName与dependentBeanNamed的依赖关系到Bean工厂
