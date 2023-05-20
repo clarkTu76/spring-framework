@@ -13,8 +13,8 @@ public class TestCycle {
 	 * lambda.getObject ->doGetBean ->createBean ->doCreateBean
 	 *
 	 * 实例化A 然后判断是否需要提前暴露 如果需要则把获取提前暴露的lambda(getEarlyBeanReference)放到三级缓存里面(addSingletonFactory)
+	 *populateBean A -> applyPropertyValues ->resolveValueIfNecessary -> resolveReference -> getBean
 	 *
-	 * populateBean A -> applyPropertyValues ->resolveValueIfNecessary -> resolveReference -> getBean
 	 * 实例化B 把B的半成品引用获取Lambda放到三级缓存里面
 	 * populateBean B -> applyPropertyValues ->resolveValueIfNecessary -> resolveReference -> getBean -> getSingleton(true)
 	 *
