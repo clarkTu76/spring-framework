@@ -25,7 +25,7 @@ public class TestCycle {
 	 *
 	 * 递归返回 populateBean B执行完
 	 * getSingleton(false) B 返回暴露的B
-	 * 返回 B的 getSingleton -> addSingleton 把B放入一级缓存 删除二三级缓存
+	 * 返回 B的 getSingleton -> addSingleton 把B放入一级缓存(此时B还在三级缓存里) 删除二三级缓存
 	 *
 	 *
 	 * 递归返回 populateBean A执行完
@@ -33,6 +33,7 @@ public class TestCycle {
 	 *
 	 * 返回 A的 getSingleton -> addSingleton 把A放入一级缓存 删除二三级缓存
 	 *
+	 * A->B->A的循环里 AB都需要提前暴露  但是B直接从三级到一级  A从三级到二级再到一级
 	 */
 	@org.junit.jupiter.api.Test
 	public void test(){
