@@ -18,13 +18,13 @@ public class TestCycle {
 	 * 实例化B 把B的半成品引用获取Lambda放到三级缓存里面
 	 * populateBean B -> applyPropertyValues ->resolveValueIfNecessary -> resolveReference -> getBean -> getSingleton(true)
 	 *
-	 * getSingleton： begin (DefaultSingletonBeanRegistry.java)
+	 * getSingleton：A begin (DefaultSingletonBeanRegistry.java)
 	 * 先去一级缓存里面获取A  若没有从二级里面查 如没有加锁 再重复查一二级 没有就查三级 三级里面有 就调用 lambda.getObject()实际就是 getEarlyBeanReference
 	 * getEarlyBeanReference里获取到A的代理半成品 放入二级缓存  从三级缓存中移除
-	 * getSingleton： end
+	 * getSingleton：A end
 	 *
 	 * 递归返回 populateBean B执行完
-	 * getSingleton(false) B
+	 * getSingleton(false) B 返回暴露的B
 	 * 返回 B的 getSingleton -> addSingleton 把B放入一级缓存 删除二三级缓存
 	 *
 	 *
