@@ -1,9 +1,9 @@
-package com.example;
+package com.example.cycle;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class Cycle {
+public class CycleTest {
 
 
 	@org.junit.jupiter.api.Test
