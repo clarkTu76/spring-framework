@@ -348,7 +348,6 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				}
 
 				// Create bean instance.
-				// 创建bean的实例对象
 				if (mbd.isSingleton()) {
 					// 返回以beanName的(原始)单例对象，如果尚未注册，则使用singletonFactory创建并注册一个对象:
 					// lambda createBean是在 ObjectFactory 的 getObject 中调用的
