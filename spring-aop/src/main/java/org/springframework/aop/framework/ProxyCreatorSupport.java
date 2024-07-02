@@ -102,6 +102,7 @@ public class ProxyCreatorSupport extends AdvisedSupport {
 		if (!this.active) {
 			activate();
 		}
+		//返回 JdkDynamicAopProxy
 		return getAopProxyFactory().createAopProxy(this);
 	}
 

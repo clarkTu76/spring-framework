@@ -17,7 +17,7 @@ public class AopTest {
 	@org.junit.jupiter.api.Test
 	public void test(){
 		ApplicationContext ac = new ClassPathXmlApplicationContext("aop_annotation.xml");
-		MyMethodService myMethodService =ac.getBean(MyMethodService.class);
+		MyMethodService myMethodService = ac.getBean(MyMethodService.class);
 		myMethodService.doSomething();
 	}
 

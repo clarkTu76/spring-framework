@@ -16,4 +16,9 @@
 
 	<!--aop支持-->
 	<aop:aspectj-autoproxy/>
+
+	<!--aop支持 强制cglib动态代理-->
+	<!--CGLIB 动态代理的优点 不需要目标类实现接口 通常情况下比 JDK 动态代理性能更高。-->
+	<!--CGLIB 动态代理的缺点 生成的代理类是目标类的子类，因此不能代理 final 类或 final 方法-->
+	<!--<aop:aspectj-autoproxy proxy-target-class="true"/>-->
 </beans>
